@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block body%}
+<div class=date>
+    {{year,month,day, session.user_name}}
+</div>
+<div class=login>
+    {% if not session.logged_in %}
+    <a href="{{url_for('login')}}">login</a>
+    {%else%}
+    <a href="{{url_for('logout')}}">logout</a>
+    {% endif %}
+</div>
+<form action="{{ url_for('index') }}" method="post" id="form">
+<table class=table>
+    {% for user in users %}
+    <tr>
+        <td> {{ user}}
+        </td>
+        <td>
+            {% if user in otmap %}
+            {{otmap[user]}}
+            {% else %}
+               {% if session.logged_in %}  
+               <input type="checkbox" name={{user}}> 
+               {% endif %}
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{%if session.logged_in%}
+<input type="submit" name="add" value="Submit" form="form">
+{%endif%}
+</form>
+{% endblock %} 
+

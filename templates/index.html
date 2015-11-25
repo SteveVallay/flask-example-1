@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block body%}
+<!--
+<div class=date>
+    {{year,month,day, session.user_name}}
+</div>
+-->
+<div class="login">
+    {% if not session.logged_in %}
+    <a class="login" href="{{url_for('login')}}">login</a>
+    {%else%}
+    <a class="login"href="{{url_for('logout')}}">logout</a>
+    {% endif %}
+</div>
+<form action="{{ url_for('index') }}" method="get" id="form2" class="form_query">
+<select name="year" form="form2">
+    {%for y in range(2015,2017)%}
+    {%if year == y %}
+    <option value="{{y}}" selected>{{y}}</option>
+    {%else%}
+    <option value="{{y}}">{{y}}</option>
+    {%endif%}
+    {%endfor%}
+</select>
+<select name="month" form="form2">
+    {%for m in range(1,13)%}
+    {%if month == m %}
+    <option value="{{m}}" selected>{{m}}</option>
+    {%else%}
+    <option value="{{m}}">{{m}}</option>
+    {%endif%}
+    {%endfor%}
+</select>
+<select name="day" form="form2">
+    {%for d in range(1,32)%}
+    {%if day == d %}
+    <option value="{{d}}" selected>{{d}}</option>
+    {%else%}
+    <option value="{{d}}">{{d}}</option>
+    {%endif%}
+    {%endfor%}
+</select> 
+<input type="submit" value="Query" form="form2">
+</form>
+<form action="{{ url_for('index') }}" method="post">
+<input type="text" name="data-add" value="{{pdate}}" readonly class="date-ro">
+<table id=table>
+        <th>Worms</th>
+        <th>Birds</th>
+    {% for user in users %}
+    <tr>
+        <td> {{ user}}
+        </td>
+        <td>
+            {% if user in otmap %}
+            {{otmap[user]}}
+            {% else %}
+               {% if session.logged_in %}  
+               <input type="checkbox" name={{user}}> 
+               {% endif %}
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{%if session.logged_in%}
+<input type="submit" value="Submit">
+{%endif%}
+</form>
+{% endblock %} 
+
